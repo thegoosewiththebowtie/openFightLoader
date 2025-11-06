@@ -5,9 +5,8 @@
 - `>` - send
 - `>>` - commit ACTion
 - `<<` - get DATa
-- `|` - repeat action, ie: `MAKE >> var1 < TYPE_A | var2 < TYPE_B` `MAKE >> var1 | var2 < TYPE` `SET >> var1 |::DATA < 
-"txt" |::X < 
-200`
+- `{``|``}` - repeat action, ie: `MAKE >> { var1 <  TYPE_A | var2  < TYPE_B }` `MAKE >> { var1 : var2 } < TYPE` `SET >> 
+var1 { ::DATA < "txt" | ::X < 200 }`
 - `::` - access
 - `""` - string
 ##  ACTs:

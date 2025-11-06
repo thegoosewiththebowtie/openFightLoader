@@ -31,7 +31,6 @@ namespace v::common {
       , SHOW
       , UNSH
     };
-
     struct sSpace {
         int _x = 0 , _y = 0;
     };
@@ -65,72 +64,81 @@ namespace v::common {
         std::unique_ptr<sf::Drawable> _drawable;
         sSpace                        _place;
     };
+    struct sAct {
+        virtual      ~sAct() = default;
+        virtual eAct xctGetType() = 0;
+    };
+    struct sMtt final : sAct {
+        eAct xctGetType() override { return eAct::MTT; }
+    };
+    struct sXbeg final : sAct {
+        std::string _group_name;
+        explicit    sXbeg(const std::string& arg_string):_group_name{arg_string}{}
+        eAct        xctGetType() override { return eAct::XBEG; }
+        sXbeg() = default;
+    };
+    struct sXend final : sAct {
+        std::string _group_name;
+        eAct xctGetType() override { return eAct::XEND; }
+    };
+    struct sExit final : sAct {
+        eAct xctGetType() override { return eAct::EXIT; }
+    };
+    struct sOpen final : sAct {
+        eAct xctGetType() override { return eAct::OPEN; }
+    };
+    struct sLoad final : sAct {
+        eAct xctGetType() override { return eAct::LOAD; }
+    };
+    struct sXtpt final : sAct {
+        eAct xctGetType() override { return eAct::XTPT; }
+    };
+    struct sMake final : sAct {
+        eAct xctGetType() override { return eAct::MAKE; }
+    };
+    struct sSetx final : sAct {
+        eAct xctGetType() override { return eAct::SETX; }
+    };
+    struct sPack final : sAct {
+        eAct xctGetType() override { return eAct::PACK; }
+    };
+    struct sUnpk final : sAct {
+        eAct xctGetType() override { return eAct::UNPK; }
+    };
+    struct sNvbx final : sAct {
+        eAct xctGetType() override { return eAct::NVBX; }
+    };
+    struct sShow final : sAct {
+        eAct xctGetType() override { return eAct::SHOW; }
+    };
+    struct sUnsh final : sAct {
+        eAct xctGetType() override { return eAct::UNSH; }
+    };
     class Act {
-        sSpace position_;
-        public:
-            struct sAct {
-                virtual      ~sAct() = default;
-                virtual eAct xctGetType() = 0;
-            };
-            struct sMtt final : sAct {
-                eAct xctGetType() override { return eAct::MTT; }
-            };
-            struct sXbeg final : sAct {
-                eAct xctGetType() override { return eAct::XBEG; }
-            };
-            struct sXend final : sAct {
-                eAct xctGetType() override { return eAct::XEND; }
-            };
-            struct sExit final : sAct {
-                eAct xctGetType() override { return eAct::EXIT; };
-            };
-            struct sOpen final : sAct {
-                eAct xctGetType() override { return eAct::OPEN; };
-            };
-            struct sLoad final : sAct {
-                eAct xctGetType() override { return eAct::LOAD; };
-            };
-            struct sXtpt final : sAct {
-                eAct xctGetType() override { return eAct::XTPT; };
-            };
-            struct sMake final : sAct {
-                eAct xctGetType() override { return eAct::MAKE; };
-            };
-            struct sSetx final : sAct {
-                eAct xctGetType() override { return eAct::SETX; };
-            };
-            struct sPack final : sAct {
-                eAct xctGetType() override { return eAct::PACK; };
-            };
-            struct sUnpk final : sAct {
-                eAct xctGetType() override { return eAct::UNPK; };
-            };
-            struct sNvbx final : sAct {
-                eAct xctGetType() override { return eAct::NVBX; };
-            };
-            struct sShow final : sAct {
-                eAct xctGetType() override { return eAct::SHOW; };
-            };
-            struct sUnsh final : sAct {
-                eAct xctGetType() override { return eAct::UNSH; };
-            };
+        Act(std::optional<sSpace> arg_nullopt , std::optional<int> arg_nullopt1 ,
+            std::unique_ptr<sAct> arg_xbeg);
+        std::optional<sSpace> position_;
+        std::optional<int>    sequence_index_;
+        std::unique_ptr<sAct> act_;
+        Act() = default;
     };
     struct sUiScreen {
         sSpace                                               _resolution;
         std::unordered_map<int , std::shared_ptr<sUiScreen>> _links;
         std::vector<sUiElement>                              _drawable_elements;
-        std::vector<Act::sAct>              _act_elements;
+        std::vector<Act>                               _act_elements;
     };
 
     struct sUiError {
         eErrorType  _type;
         std::string _message;
         sUiError() = default;
-        sUiError(const eErrorType arg_error , const std::basic_string<char>& arg_str): _type{arg_error} , _message{arg_str} {};
+
+        sUiError(const eErrorType arg_error , const std::basic_string<char>& arg_str): _type{arg_error}
+                                                                                   , _message{arg_str} {};
     };
 
     using ui_screen_TD = std::variant<sUiError , sUiScreen>;
-
 }
 
 /* [≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡▲≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡] */

@@ -1,9 +1,12 @@
 [  XBEG >> PRMS ]
 [[ SETX >> SIZE
-    |::X < 800
-    |::Y < 600
-    ]]
-[[ SETX >> BKGR |::TYPE < CLR |::CLR < #666666 ]]
+    { ::X < 800
+    | ::Y < 600
+    }]]
+[[ SETX >> BKGR
+    { ::TYPE < CLR
+    | ::CLR < #666666
+    }]]
 [  XEND >> PRMS ]
 
 [  XBEG >> ACT ]
@@ -14,20 +17,24 @@
 
 [  XBEG >> INT ]
 [[ MAKE >> package_folder_interact << INT ]]
-[[ SETX >> package_folder_interact |::Y << 200 |::Y << 300 |::XCT << package_folder]]
+[[ SETX >> package_folder_interact
+    { ::Y << 200
+    | ::Y << 300
+    | ::XCT << package_folder
+    }]]
 [  XEND >> INT ]
 
 [  XBEG >> LMT ]
 [[ MAKE >> hello_ofui < TEXT ]]
 [[ SETX >> hello_ofui
-    |::TEXT < "hello ofui!"
-    |::X  < 110
-    |::Y < 300
-    |::SIZE < 16
-    |::FONT < NULL
-    |::FONT_TYPE < NULL
-    |::COLOR < #FFFF
-    ]]
+    { ::TEXT < "hello ofui!"
+    | ::X  < 110
+    | ::Y < 300
+    | ::SIZE < 16
+    | ::FONT < NULL
+    | ::FONT_TYPE < NULL
+    | ::COLOR < #FFFF
+    }]]
 [  XEND >> LMT ]
 
 [  XBEG >> SEQ ]
